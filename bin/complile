@@ -1,0 +1,16 @@
+#!/bin/bash
+
+BUILD_DIR=$1
+
+# Check if .git exists
+if [ -d "$BUILD_DIR/.git" ]; then
+  cd $BUILD_DIR
+  echo "Exporting git metadata"
+
+  # Write environment variables
+  echo "export GIT_COMMIT=$(git rev-parse HEAD)" > $BUILD_DIR/.profile.d/git_env.sh
+  echo "export GIT_BRANCH=$(git rev-parse --abbrev-ref HEAD)" >> $BUILD_DIR/.profile.d/git_env.sh
+  echo "export GIT_MESSAGE=\"$(git log -1 --pretty=%B)\"" >> $BUILD_DIR/.profile.d/git_env.sh
+else
+  echo "No git directory found."
+fi
